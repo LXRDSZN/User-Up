@@ -20,10 +20,35 @@ const router = createRouter({
       component: () => import('@/views/Registro/RegistroView.vue')
     },
     {
+      path:'/Alumnos',
+      name:'Alumnos',
+      component: ()=> import('@/views/Alumnos/AlumnosViews.vue')
+    },
+    {
+      path:'/Docentes',
+      name:'Docentes',
+      component: () => import('@/views/Docentes/DocentesViews.vue')
+    },
+    {
       path:'/Materias',
       name:'Materias',
       component : () => import ('@/views/Materias/MateriasView.vue')
     },
+    {
+      path: '/Horarios',
+      name:'Horarios',
+      component: () => import('@/views/Horarios/HorariosViews.vue')
+    },
+    {
+      path: '/Grupos',
+      name:'Grupos',
+      component :() => import('@/views/Horarios/HorariosViews.vue')
+    },
+    {
+      path:'/Kardex',
+      name:'Kardex',
+      component: () => import('@/views/Kardex/KardexViews.vue')
+    }
   ]
 })
 

@@ -11,6 +11,11 @@ import { loginSchema, signupSchema } from "../middleware/authSchemas.js";
 import { createSubject, getSubjects, deleteSubject,updateSubject} from "../models/materias/materias.js";
 import { verificarmaterias } from "../middleware/materias.js";
 
+
+import { uploadUserFiles } from "../models/UserFiles/UserFile.js";
+import { upload } from "../middleware/multer.js";
+
+import { obtenerArchivosUsuario } from "../models/UserFiles/UserFile.js";
 const router = Router();
 router.post("/register", register);
 router.post("/login", login);
@@ -122,6 +127,23 @@ router.delete('/auth/bajamateria/:key', verificarToken, deleteSubject);
 ##################################################################################################
 */
 router.put('/auth/actualizarmateria/:key', verificarToken, updateSubject);
+
+
+
+router.post(
+  "/auth/user-files",
+  verificarToken, // debe definir req.usuario.id
+  upload.fields([
+    { name: "foto", maxCount: 1 },
+    { name: "cv", maxCount: 1 },
+    { name: "recibo", maxCount: 1 }
+  ]),
+  uploadUserFiles
+);
+
+
+router.get("/user-files", verificarToken, obtenerArchivosUsuario);
+
 
 export default router;
 

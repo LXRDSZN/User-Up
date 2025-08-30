@@ -147,3 +147,5 @@ export const actualizarMateria = async (key, subjectname) => {
     throw error;
   }
 };
+
+
