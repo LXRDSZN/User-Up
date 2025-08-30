@@ -1,9 +1,11 @@
 <script setup>
 import navbar from '@/components/navbar.vue';
+import ComponentDashboard from '@/components/Dashboard/Component-Dashboard.vue';
 </script>
 <template>
     <div class="System-Panel">
         <navbar/>
+        <ComponentDashboard/>
     </div>
   </template>
   

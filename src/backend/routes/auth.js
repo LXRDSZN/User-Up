@@ -132,7 +132,7 @@ router.put('/auth/actualizarmateria/:key', verificarToken, updateSubject);
 
 router.post(
   "/auth/user-files",
-  verificarToken, // debe definir req.usuario.id
+  verificarToken, // define req.usuario.id
   upload.fields([
     { name: "foto", maxCount: 1 },
     { name: "cv", maxCount: 1 },
@@ -141,9 +141,23 @@ router.post(
   uploadUserFiles
 );
 
+router.get('/auth/user-files', verificarToken, async (req, res) => {
+  try {
+    const files = await UserFiles.findOne({ user: req.usuario.id });
 
-router.get("/user-files", verificarToken, obtenerArchivosUsuario);
+    if (!files) {
+      return res.status(404).json({ message: 'No has subido archivos todavía.' });
+    }
 
+    res.json(files);
+  } catch (error) {
+    console.error('Error al obtener archivos:', error);
+    res.status(500).json({ message: 'Error al obtener archivos.' });
+  }
+});
+
+
+router.get('/auth/user-files', verificarToken, obtenerArchivosUsuario);
 
 export default router;
 
