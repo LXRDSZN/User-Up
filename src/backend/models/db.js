@@ -4,7 +4,7 @@ const backendSchema = new mongoose.Schema({
   nombre:   { type: String, required: true },
   creadoEn: { type: Date,   default: Date.now },
 }, {
-  collection: 'backend' 
+  collection: 'users' 
 });
 
 export const Backend = mongoose.model('Backend', backendSchema);

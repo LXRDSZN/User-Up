@@ -2,7 +2,7 @@ import User from "../usuarios/user.js";
 import bcrypt from "bcryptjs";
 
 // Función para registrar o verificar login de usuario
-export const signup = async (username, email, password) => {
+export const signup = async (fullname, age, username, email, password, role) => {
   try {
     // Verificamos si ya existe un usuario con ese username o email
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -18,9 +18,12 @@ export const signup = async (username, email, password) => {
 
     // Creamos el nuevo usuario
     const newUser = new User({
+      fullname,
+      age,
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role
     });
 
     // Guardamos en la base de datos

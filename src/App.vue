@@ -11,6 +11,7 @@ const isPanelView = () => {
   route.name === 'Docentes' ||
   route.name === 'Materias' ||
   route.name === 'Horarios' ||
+  route.name === 'Usuarios' ||
   route.name === 'Grupos'   ||
   route.name === 'Kardex';
 };

@@ -9,15 +9,18 @@
             <button class="hamburger" @click="toggleSidebar">☰</button>
 
             <ul v-show="!isSidebarCollapsed">
-                <li>
+                <li v-if="userRole === 'user'">
                     <RouterLink to="/Dashboard">
                         <span class="material-icons">home</span> Panel de control
                     </RouterLink>
                 </li>
-                <li>
-                    <RouterLink to="/Alumnos"><span class="material-icons">person</span>Alumno</RouterLink>
+                <li v-if="userRole === 'user'">
+                    <RouterLink to="/Alumnos"><span class="material-icons">book</span>Archivos</RouterLink>
                 </li>
-                <li>
+                <li v-if="userRole === 'admin'">
+                    <RouterLink to="/Usuarios"><span class="material-icons">person</span>Alumnos</RouterLink>
+                </li>
+                <!-- <li>
                     <RouterLink to="/Docentes"><span class="material-icons">school</span>Docentes</RouterLink>
                 </li>
                 <li>
@@ -35,7 +38,8 @@
                 <li>
                     <RouterLink to="/Kardex">
                        <span class="material-icons">app_registration</span>Kardex</RouterLink> 
-                </li>
+                </li> -->
+                
             </ul>
 
             <!-- Opciones  de Soporte y Salir -->
@@ -64,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
@@ -74,6 +78,20 @@ const router = useRouter();
 function toggleSidebar() {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 }
+
+const userRole = ref('guest');
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('http://localhost:5000/api/auth/get-role',{
+            withCredentials: true
+        });
+        userRole.value = response.data.role;
+    } catch (error) {
+        console.error('Error al obtener el rol:', error);
+    }
+});
+
 
 async function logout() {
   try {

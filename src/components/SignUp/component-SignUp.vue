@@ -1,5 +1,13 @@
 <template>
     <div class="login-container">
+      <section class="fullname">
+        <label for="fullname">Nombre Completo:</label>
+        <input type="text" id="fullname" v-model="fullname" placeholder="Ingrese su Nombre Completo" />
+      </section>
+      <section class="phone">
+        <label for="age">Edad:</label>
+        <input type="number" id="age" v-model="age" placeholder="Ingrese su Edad" />
+      </section>
       <section class="user">
         <label for="username">Usuario:</label>
         <input type="text" id="username" v-model="username" placeholder="Ingrese su Usuario" />
@@ -12,7 +20,13 @@
         <label for="password">Contraseña:</label>
         <input type="password" id="password" v-model="password" placeholder="Ingrese su contraseña" />
       </section>
-  
+      <section class="rol">
+        <label for="role">Rol:</label>
+        <select id="role" v-model="role">
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+      </section>
       <button class="login-button" @click="login">Registrar</button>
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </div>
@@ -26,6 +40,8 @@
    
   
   // Variables reactivas
+  const fullname = ref('');
+  const age = ref(0);
   const username = ref('');
   const email = ref('');
   const password = ref('');
@@ -47,9 +63,12 @@ const login = async () => {
 
   try {
     const response = await axios.post('http://localhost:5000/api/auth/signup', {
+      nombre: fullname.value,
+      edad: age.value,
       usuario: username.value,
       email: email.value,
       contrasena: password.value,
+      rol: role.value,
     });
 
     // Comprobamos si el registro fue exitoso usando el código de estado
@@ -103,14 +122,25 @@ const login = async () => {
     max-width: 500px;
     margin: 0 auto;
   }
-  
+  .fullname, 
+  .phone,
   .user, 
   .email,
-  .password {
+  .password,
+  .rol{
     width: 100%;
     margin-bottom: 1rem;
   }
   
+  select {
+    width: 50%;
+    padding: 0.75rem;
+    background: var(--vt-c-white);
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    transition: border-color 0.3s;
+  }
+
   label {
     display: block;
     margin-bottom: 0.5rem;
@@ -140,6 +170,7 @@ const login = async () => {
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 1rem;
   }
   
   .login-button:hover {

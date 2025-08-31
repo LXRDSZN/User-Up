@@ -49,6 +49,7 @@
     });
 
     if (response.data.message === 'Login exitoso') {
+      
       // Muestra un mensaje de éxito
       toast.success('Inicio de sesión exitoso. Bienvenido!', {
         position: 'top-right',
@@ -56,9 +57,15 @@
         dismissible: true,
       });
 
-      // Redirige a la página de Dashboard
+      
       setTimeout(() => {
-        router.push('/Dashboard'); // Redirigir al panel
+        // Segun el rol redirecciona
+        if (response.data.role === 'user') {
+          router.push('/Dashboard'); // Redirigir al panel de usuario
+        } else {
+          router.push('/Usuarios'); // Redirigir al panel de usuario
+        }
+        
       }, 750);
     }
   } catch (error) {

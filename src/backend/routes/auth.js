@@ -8,11 +8,11 @@ import validateSchema from "../middleware/validateSchema.js";
 import { verificarToken } from '../middleware/authMiddleware.js';
 import { loginSchema, signupSchema } from "../middleware/authSchemas.js";
 //Parametros de las funciones del CRUD (CREAR, LEER, BORRAR, MODIFICAR)
-import { createSubject, getSubjects, deleteSubject,updateSubject} from "../models/materias/materias.js";
-import { verificarmaterias } from "../middleware/materias.js";
+//import { createSubject, getSubjects, deleteSubject,updateSubject} from "../models/materias/materias.js";
+//import { verificarmaterias } from "../middleware/materias.js";
+import UserFiles from "../models/usuarios/userFiles.js"; // Modelo con mayúscula
 
-
-import { uploadUserFiles } from "../models/UserFiles/UserFile.js";
+import { obtenerArchivos, uploadUserFiles } from "../models/UserFiles/UserFile.js";
 import { upload } from "../middleware/multer.js";
 
 import { obtenerArchivosUsuario } from "../models/UserFiles/UserFile.js";
@@ -38,7 +38,7 @@ router.post('/auth/login', validateSchema(loginSchema), async (req, res) => {
     return res.status(401).json({ message: 'Credenciales incorrectas' });
   }
 
-  const token = jwt.sign({ id: user._id, username: user.username }, 'secretKey', { expiresIn: '1h' });
+  const token = jwt.sign({ id: user._id, username: user.username, role: user.role  }, 'secretKey', { expiresIn: '1h' });
 
   // Enviar el token como una cookie
   res.cookie('token', token, {
@@ -49,7 +49,7 @@ router.post('/auth/login', validateSchema(loginSchema), async (req, res) => {
   });
   
 
-  return res.json({ message: 'Login exitoso' });
+  return res.json({ message: 'Login exitoso', role: user.role });
 });
 
 /*
@@ -61,10 +61,10 @@ router.post('/auth/login', validateSchema(loginSchema), async (req, res) => {
 //Ruta  de endpoint para registrar un usuario
 
 router.post('/auth/signup', validateSchema(signupSchema), async (req, res) => {
-  const { usuario, email, contrasena } = req.body;
+  const { nombre, edad, usuario, email, contrasena, rol } = req.body;
 
   try {
-    const nuevousuario = await signup(usuario, email, contrasena);
+    const nuevousuario = await signup(nombre, parseInt(edad), usuario, email, contrasena, rol);
     return res.status(201).json({ message: 'Usuario registrado exitosamente', data: nuevousuario });
   } catch (error) {
     console.error('Error al registrar el usuario:', error);
@@ -105,13 +105,13 @@ router.get('/auth/perfil', verificarToken, (req, res) => {
 ##################################################################################################
 */
 
-router.post("/auth/materias", verificarmaterias, createSubject);
+// router.post("/auth/materias", verificarmaterias, createSubject);
 /*
 ##################################################################################################
 #                          Endpoint para consultar  materias                                     #
 ##################################################################################################
 */
-router.get('/auth/materias', verificarmaterias, getSubjects);
+// router.get('/auth/materias', verificarmaterias, getSubjects);
 
 
 /*
@@ -119,14 +119,14 @@ router.get('/auth/materias', verificarmaterias, getSubjects);
 #                          Endpoint para borrar  materias                                         #
 ##################################################################################################
 */
-router.delete('/auth/bajamateria/:key', verificarToken, deleteSubject);
+// router.delete('/auth/bajamateria/:key', verificarToken, deleteSubject);
 
 /*
 ##################################################################################################
 #                          Endpoint para actualizar  materias                                      #
 ##################################################################################################
 */
-router.put('/auth/actualizarmateria/:key', verificarToken, updateSubject);
+// router.put('/auth/actualizarmateria/:key', verificarToken, updateSubject);
 
 
 
@@ -156,6 +156,12 @@ router.get('/auth/user-files', verificarToken, async (req, res) => {
   }
 });
 
+router.get('/auth/users-data', verificarToken, obtenerArchivos);
+
+
+router.get('/auth/get-role', verificarToken, async (req, res) => {
+  res.json({role: req.usuario.role})
+});
 
 router.get('/auth/user-files', verificarToken, obtenerArchivosUsuario);
 

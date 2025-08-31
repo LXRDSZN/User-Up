@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/Dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/Dashboard/DashboardViews.vue') 
+      component: () => import('@/views/Dashboard/DashboardViews.vue')
     },
     {
       path:'/Registrate',
@@ -22,7 +22,12 @@ const router = createRouter({
     {
       path:'/Alumnos',
       name:'Alumnos',
-      component: ()=> import('@/views/Alumnos/AlumnosViews.vue')
+      component: ()=> import('@/views/Alumnos/AlumnosViews.vue'),
+    },
+    {
+      path:'/Usuarios',
+      name:'Usuarios',
+      component: ()=> import('@/views/Usuarios/UsuariosView.vue')
     },
     {
       path:'/Docentes',

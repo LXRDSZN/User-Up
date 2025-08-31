@@ -31,6 +31,7 @@ const obtenerArchivos = async () => {
 };
 
 onMounted(() => {
+  
   obtenerArchivos();
 });
 </script>
