@@ -23,8 +23,8 @@
       <section class="rol">
         <label for="role">Rol:</label>
         <select id="role" v-model="role">
-          <option value="admin">Admin</option>
-          <option value="user">User</option>
+          <option value="admin">Administrador</option>
+          <option value="user">Usuario</option>
         </select>
       </section>
       <button class="login-button" @click="login">Registrar</button>
